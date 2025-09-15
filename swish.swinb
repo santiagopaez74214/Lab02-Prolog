@@ -1,0 +1,34 @@
+<div class="notebook">
+
+<div class="nb-cell program" name="p1">
+solucion(SolucionReinas) :-
+    EstadoInicial = [],
+    dfs(EstadoInicial, [EstadoInicial], SolucionReinas).
+
+dfs(EstadoReinas, _, EstadoReinas) :-
+    length(EstadoReinas, 8).  
+
+dfs(EstadoReinas, Visitados, SolucionReinas) :-
+    length(EstadoReinas, NumReinas),
+    NumReinas &lt; 8,
+    between(1, 8, FilaNueva),
+    esSegura(FilaNueva, EstadoReinas),
+    append(EstadoReinas, [FilaNueva], NuevoEstadoReinas),
+    \+ member(NuevoEstadoReinas, Visitados),
+    dfs(NuevoEstadoReinas, [NuevoEstadoReinas | Visitados], SolucionReinas).
+
+esSegura(FilaNueva, EstadoReinas) :-
+    length(EstadoReinas, Distancia),
+    esSeguraAux(FilaNueva, EstadoReinas, Distancia).
+
+esSeguraAux(_, [], _).
+esSeguraAux(FilaNueva, [FilaExistente | OtrasReinas], Distancia) :-
+    FilaNueva \= FilaExistente,  
+    abs(FilaNueva - FilaExistente) \= Distancia,  
+    NuevaDistancia is Distancia - 1,
+    esSeguraAux(FilaNueva, OtrasReinas, NuevaDistancia).
+todas(Soluciones) :-
+    findall(S, solucion(S), Soluciones).
+</div>
+
+</div>
